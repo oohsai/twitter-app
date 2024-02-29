@@ -4,7 +4,6 @@ import { PrismaClient } from "@prisma/client";
 const tweetRouter = Router();
 const prisma = new PrismaClient();
 //tweet crud
-
 //create a user
 tweetRouter.post("/", async (req, res) => {
   const { content, image, userId } = req.body;
@@ -24,17 +23,22 @@ tweetRouter.post("/", async (req, res) => {
 
 //get all tweets
 tweetRouter.get("/", async (req, res) => {
-  const allTweets = await prisma.tweet.findMany();
+  const allTweets = await prisma.tweet.findMany({
+    include: { user: { select: { id: true, name: true, image: true } } },
+  });
   res.json(allTweets);
 });
 
-//
+//get one tweet
 tweetRouter.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const tweetId = await prisma.tweet.findUnique({
       where: {
         id: Number(id),
+      },
+      include: {
+        user: true,
       },
     });
     if (!tweetId) {

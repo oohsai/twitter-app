@@ -12,6 +12,8 @@ datasource db {
 
 model User {
   id Int  @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   email String @unique
   name String?
   username String? @unique
@@ -41,11 +43,11 @@ model Token {
 
 model Tweet {
   id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   content String
   image String?
   impressions Int @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   userId Int
   user User @relation(fields: [userId], references: [id])
 }

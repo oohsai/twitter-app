@@ -31,13 +31,16 @@ userRouter.get("/", async (req, res) => {
 });
 
 //get one user
-userRouter.use("/:id", async (req, res) => {
+userRouter.get("/:id", async (req, res) => {
   const { id } = req.params;
   const user = await prisma.user.findUnique({
     where: {
       id: Number(id),
     },
   });
+  if (!user) {
+    return res.status(400).json("No User found");
+  }
   res.json(user);
 });
 

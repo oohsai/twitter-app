@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 const tweetRouter = Router();
 const prisma = new PrismaClient();
-const JWT_SECRET = "secretcode";
+const JWT_SECRET = process.env.JWT_SECRET || "secretcode";
 
 //tweet crud
 //create a user
@@ -22,6 +22,7 @@ tweetRouter.post("/", async (req, res) => {
       include: { user: true },
     });
     res.json(createTweet);
+    //TODO send emailToken to email
   } catch (error) {
     res.status(400).json({ error: "Username and email should be unique" });
   }
